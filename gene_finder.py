@@ -8,14 +8,24 @@ YOUR HEADER COMMENT HERE
 
 import random
 from amino_acids import aa, codons, aa_table   # you may find these useful
+
+#Importing the metagenome
+
+from load import load_metagenome 
+metagenome = load_metagenome() 
+
+#Loading the nitrogenase 
+
 from load import load_seq
+from load import load_nitrogenase_seq
+nitrogenase = load_nitrogenase_seq() 
 
 
-def shuffle_string(s):
-    """Shuffles the characters in the input string
-        NOTE: this is a helper function, you do not
-        have to modify this in any way """
-    return ''.join(random.sample(s, len(s)))
+# def shuffle_string(s):
+#     """Shuffles the characters in the input string
+#         NOTE: this is a helper function, you do not
+#         have to modify this in any way """
+#     return ''.join(random.sample(s, len(s)))
 
 # YOU WILL START YOUR IMPLEMENTATION FROM HERE DOWN ###
 
@@ -65,9 +75,9 @@ def get_reverse_complement(dna):
     #for character in(dna):
      #   print character
 
-    dnalist = list (dna) #dna in correct order
+    dnalist = list(dna) #dna in correct order
     dnalist.reverse() #dna in complement order now
-    finallist = list () #create a totally empty list
+    finallist = list() #create a totally empty list
     #for item in dnalist:
      #   item = get_complement(item)
     for element in dnalist: #taking reversed element list, getting complement, putting it in final list
@@ -268,7 +278,8 @@ def longest_ORF_noncoding(dna, num_trials):
 
     while i < num_trials:
         i = i +1
-        randomdna=shuffle_string(dna)
+        randomdna = dna
+        # randomdna=shuffle_string(dna)
         longestorf=longest_ORF(randomdna)
         #lengths.append(len(longestorf))
         if len(longestorf)>lengthy:
@@ -317,14 +328,23 @@ def gene_finder(dna):
     for i in orflist:
         if len(i) >= threshold: #else ignore that item in the list
             aminoacids.append(coding_strand_to_AA(i)) # get the amino acids for that dna sequence in the list and append that item to the list
-    return aminoacids
+    return orflist
 
-
-
+#GOING BEYOND CODE BEGINS HERE 
+i = 0 
+for element in dna: 
+    for word in b: 
+        for myword in nitrogenase: 
+            if myword == word:
+                n[myword] = n.get(nitrogenase[i], 0) + 1
+                nitrogenase
+        negative = sum(n.values())
+       
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
     from load import load_seq
-    dna = load_seq("./data/X73525.fa")
-    #dna = "ATGCTCCTTATC"
+    # dna = "ATGCGAATGTAGCATCAAA"
+    # dna = load_seq("./data/X73525.fa") #From earlier code. 
+    dna = metagenome[0][1] #Putting the metagenome into genefinder. 
     print gene_finder(dna)
