@@ -3,12 +3,10 @@
 import pygame 
 import time 
 from random import choice
-Example_Genome = [(0, 19), (0, 25), (.15, 30), (0, 40), (.60, 40)] 
-Example_Genome2 = [(0, 15), (0, 40), (.35, 30), (0, 40), (.60, 100)] 
+Example_Genome = [(0, 19), (.5, 25), (0, 20)] 
+Example_Genome2 = [(0, 15), (.5 , 40), (0, 20), (.9, 10)]
 Genome_List = [Example_Genome, Example_Genome2]
-Genome_Bar_Height = 0
-a = 0
-b = 0 
+Genome_Bar_Height = 10
 
 #Code to determine variables 
 
@@ -20,17 +18,18 @@ b = 0
 class Nitrogene_Graph_Model(object): 
     def __init__(self, size):
         """Initialize within the specialized model""" 
-        self.screen = pygame.display.set_mode(size)
+        self.WIDTH = size
+        self.left = size[0]
 
 #View - draw functions 
 
 #Adapted from PolkaDots game from the previous project.
 class Nitrogene_Graph_View (object):
     def __init__(self, model):
+        self.screen = pygame.display.set_mode(size)
         self.model = model 
-
     def draw(self): 
-        """Draws the gene image onto the window."""
+        """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
 
         self.screen.fill(pygame.Color('white'))
         background = pygame.Surface(screen.get_size()) #This is just making a surface because we have to use blitting to make things show up. 
@@ -38,30 +37,39 @@ class Nitrogene_Graph_View (object):
         background.fill((255, 255, 255)) #This needs to match color
 
         font = pygame.font.Font(None, 36)
-        text = font.render("Nitrogene Matches:", 1, (0, 0, 0))
+        text = font.render("Nitrogene Visualization", 1, (0, 0, 0))
         textpos = text.get_rect()
-        textpos.centerx = WIDTH - 270 
+        textpos.centerx = 300 
         background.blit(text, textpos)
         screen.blit(background, (0,0))
-   
-        for Genome in Genome_List:
+
+
+        for genome_num,Genome in enumerate(Genome_List):
             #Creating the stacking elements that build the bar graph for false values
-            if 0 <= Genome[0][0] <= .15: 
-                pygame.rect(screen, (255, 0, 0, 0),Genome[b], Genome_Bar_Height) 
+            current = 0
 
-                #Iterate through the rest of the sequence. 
-      
-                b + 1
+            for gene_num,gene in enumerate(Genome):
 
-            elif i[a] in Genome_List <= .15: #and => 0: 
-                color_match = (0, i[a]*255 , 0, 0) 
-                pygame.rect(screen, (color_match), left + i[b], top - Genome_Bar_Height) 
+                rectangle = pygame.Rect(current, 
+                        (genome_num +1)*(Genome_Bar_Height+20),
+                        gene[1], 
+                        ((genome_num)*Genome_Bar_Height +20)
+                         )
 
-                #Iterate through the rest of the 
-      
-                b + 1
+                if 0 <= gene[0] <= .15:
 
-            i + 1 
+                    pygame.draw.rect(self.screen, (0, 0, 0, 0), rectangle, 0)
+                    
+                    #Iterate through the rest of the sequence. 
+
+                elif gene[0] >= .15: 
+                    color_match = (0, gene[0]*255, 0, 0) 
+                    pygame.draw.rect(self.screen, color_match, rectangle, 0)
+                
+                current += gene[1]
+
+
+        pygame.display.flip()
 
 #Running the Code (Adapted from the in class brick breaker code.)
 if __name__ == '__main__':
@@ -71,7 +79,12 @@ if __name__ == '__main__':
     model = Nitrogene_Graph_Model(size)  
     view = Nitrogene_Graph_View(model)
     screen = pygame.display.set_mode(size) #This is the surface you want to draw to.
+    #Initialize left and WIDTH 
     running = True
-    while running: 
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
         view.draw() 
         time.sleep(.001)
