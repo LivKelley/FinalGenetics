@@ -5,7 +5,7 @@ import time
 from random import choice
 Example_Genome = [(0, 19), (.5, 25), (0, 20)] 
 Example_Genome2 = [(0, 15), (.5 , 40), (0, 20), (.9, 10)]
-Genome_List = [Example_Genome, Example_Genome2]
+Genome_List = [Example_Genome, Example_Genome2] #Do we need code that puts each genome list into such a megalist or breaks them out of it (depending on Nitrogene's output?)
 Genome_Bar_Height = 10
 
 #Code to determine variables 
