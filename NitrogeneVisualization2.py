@@ -30,7 +30,7 @@ class Nitrogene_Graph_View (object):
         self.screen = pygame.display.set_mode(size)
         self.model = model 
         self.threshold = raw_input("Please type a two digit decimal representing the DNA accuracy threshold percentage. Example: .20 would be 20%.")
-        self.Genome_Bar_Height = 10 
+        self.Genome_Bar_Height = 30 
 
     def draw(self): 
         """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
@@ -58,9 +58,9 @@ class Nitrogene_Graph_View (object):
             for gene_num,gene in enumerate(Genome):
 
                 rectangle = pygame.Rect(current, 
-                        ((genome_num+1))*(self.Genome_Bar_Height+20),
+                        ((genome_num+1))*(self.Genome_Bar_Height),
                         gene[1], 
-                        (((genome_num))*self.Genome_Bar_Height +20)
+                        (self.Genome_Bar_Height)
                          )
 
                 if 0 <= gene[0] <= float(self.threshold):
@@ -80,9 +80,9 @@ class Nitrogene_Graph_View (object):
             for gene_num,gene in enumerate(Genome):
 
                 rectangle = pygame.Rect(current, 
-                        ((genome_num+1))*(self.Genome_Bar_Height+20),
+                        ((genome_num+1))*(self.Genome_Bar_Height),
                         gene[1], 
-                        (((genome_num))*self.Genome_Bar_Height +20)
+                        (self.Genome_Bar_Height)
                          )
 
                 if rectangle.collidepoint(Mouse_Position):
