@@ -6,7 +6,8 @@ import sys
 from random import choice
 Example_Genome = [(0, 19), (.5, 25), (0, 20)] 
 Example_Genome2 = [(0, 15), (.5 , 40), (0, 20), (.9, 10),(.4, 90), (.8, 60),(.7, 30), (.2, 10)]
-Genome_List = [Example_Genome, Example_Genome2] #Do we need code that puts each genome list into such a megalist or breaks them out of it (depending on Nitrogene's output?)
+Example_Genome3 = [(0, 15), (.5 , 40), (0, 20), (.9, 10),(.4, 90)]
+Genome_List = [Example_Genome, Example_Genome2, Example_Genome3] #Do we need code that puts each genome list into such a megalist or breaks them out of it (depending on Nitrogene's output?)
 
 #Code to determine variables 
 
@@ -58,7 +59,7 @@ class Nitrogene_Graph_View (object):
             for gene_num,gene in enumerate(Genome):
 
                 rectangle = pygame.Rect(current, 
-                        ((genome_num+1))*(self.Genome_Bar_Height),
+                        ((genome_num+1))*(self.Genome_Bar_Height) + genome_num * 10,
                         gene[1], 
                         (self.Genome_Bar_Height)
                          )
@@ -79,11 +80,11 @@ class Nitrogene_Graph_View (object):
 
             for gene_num,gene in enumerate(Genome):
 
-                rectangle = pygame.Rect(current, 
-                        ((genome_num+1))*(self.Genome_Bar_Height),
-                        gene[1], 
-                        (self.Genome_Bar_Height)
-                         )
+                rectangle = pygame.Rect(current,                                        #left
+                        ((genome_num+1))*(self.Genome_Bar_Height + genome_num * 10),    #top
+                        gene[1],                                                        #width
+                        (self.Genome_Bar_Height)                                        #height
+                        )
 
                 if rectangle.collidepoint(Mouse_Position):
                     font = pygame.font.Font(None, 26)
