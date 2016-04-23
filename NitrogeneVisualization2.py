@@ -7,7 +7,6 @@ from random import choice
 Example_Genome = [(0, 19), (.5, 25), (0, 20)] 
 Example_Genome2 = [(0, 15), (.5 , 40), (0, 20), (.9, 10),(.4, 90), (.8, 60),(.7, 30), (.2, 10)]
 Genome_List = [Example_Genome, Example_Genome2] #Do we need code that puts each genome list into such a megalist or breaks them out of it (depending on Nitrogene's output?)
-Genome_Bar_Height = 10
 
 #Code to determine variables 
 
@@ -21,6 +20,7 @@ class Nitrogene_Graph_Model(object):
         """Initialize within the specialized model""" 
         self.WIDTH = size
         self.left = size[0]
+        
 
 #View - draw functions 
 
@@ -30,6 +30,7 @@ class Nitrogene_Graph_View (object):
         self.screen = pygame.display.set_mode(size)
         self.model = model 
         self.threshold = raw_input("Please type a two digit decimal representing the DNA accuracy threshold percentage. Example: .20 would be 20%.")
+        self.Genome_Bar_Height = 10 
 
     def draw(self): 
         """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
@@ -57,19 +58,12 @@ class Nitrogene_Graph_View (object):
             for gene_num,gene in enumerate(Genome):
 
                 rectangle = pygame.Rect(current, 
-                        (genome_num +1)*(Genome_Bar_Height+20),
+                        ((genome_num+1))*(self.Genome_Bar_Height+20),
                         gene[1], 
-                        ((genome_num)*Genome_Bar_Height +20)
+                        (((genome_num))*self.Genome_Bar_Height +20)
                          )
 
-                if rectangle.collidepoint(Mouse_Position):
-                    #print str(gene[0]*100) + "%"
-                    pygame.draw.rect(self.screen, (0, 100, 200, 0), rectangle, 0)
-                    font = pygame.font.Font(None, 26)
-                    text = font.render(("   " + str(gene[0]*100) + " %"), 1, (50, 0, 200))
-                    screen.blit(text, (Mouse_Position))
-
-                elif 0 <= gene[0] <= float(self.threshold):
+                if 0 <= gene[0] <= float(self.threshold):
 
                     pygame.draw.rect(self.screen, (0, 0, 0, 0), rectangle, 0)
                     
@@ -78,10 +72,29 @@ class Nitrogene_Graph_View (object):
                 elif gene[0] >= float(self.threshold): 
                     color_match = (0, gene[0]*255, 0, 0) 
                     pygame.draw.rect(self.screen, color_match, rectangle, 0)
+
+                current += gene[1]
+
+            current = 0
+
+            for gene_num,gene in enumerate(Genome):
+
+                rectangle = pygame.Rect(current, 
+                        ((genome_num+1))*(self.Genome_Bar_Height+20),
+                        gene[1], 
+                        (((genome_num))*self.Genome_Bar_Height +20)
+                         )
+
+                if rectangle.collidepoint(Mouse_Position):
+                    font = pygame.font.Font(None, 26)
+                    text = font.render(("   " + str(gene[0]*100) + " %"), 1, (50, 0, 200))
+                    screen.blit(text, (Mouse_Position))
                 
                 current += gene[1]
 
+
         pygame.display.flip()
+
 
 #class Nitrogene_Controller(): 
     #pygame.mouse.set_cursor(pygame.cursors.arrow)
