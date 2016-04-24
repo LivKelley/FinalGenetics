@@ -1,38 +1,46 @@
 # -*- coding: utf-8 -*-
 """
-YOUR HEADER COMMENT HERE
-
-@author: YOUR NAME HERE
-
+Last updated: April 15, 2016
+Find Nitrogenase
+@author: Erica Lee, Rebecca Gettys, Liv Kelley
 """
 
-import random
-from amino_acids import aa, codons, aa_table   # you may find these useful
+### FROM HERE DOWN IS CODE THAT IS COMMENTED OUT AND MOVING TO NITROGENASE FINDER
+#import random
+#from distance import levenshtein
+#from amino_acids import aa, codons, aa_table   # you may find these useful
+#import sys
+#import pickle
+##from os import path
+
+
+
+
+#sys.setrecursionlimit(3000)
+
 
 #Importing the metagenome
 
-from load import load_metagenome 
-metagenome = load_metagenome() 
 
-#Loading the nitrogenase 
-
-from load import load_seq
-from load import load_nitrogenase_seq
-nitrogenase = load_nitrogenase_seq() 
+#from load import load_metagenome
+#metagenome = load_metagenome()
+# metagenome = 'ATGGGAAAACTCCGGCAGATCGCTTTCTACGGCAAGGGCGGGATCGGCAAGTCGACGACCTCGCAGAACACCCTCGCGGCACTGGTCGAGATGGGTCAGAAGATCCTCATCGTCGGCTGCGATCCCAAGGCCGACTCGACCCGCCTGATCCTGAACACCAAGCTGCAGGACACCGTGCTTCACCTCGCCGCCGAAGCGGGCTCCGTCGAGGATCTCGAACTCGAGGATGTGGTCAAGATCGGCTACAAGGGCATCAAATGCACCGAAGCCGGCGGGCCGGAGCCGGGCGTGGGCTGCGCGGGCCGCGGCGTCATCACCGCCATCAACTTCCTGGAAGAGAACGGCGCCTATGACGACGTCGACTACGTCTCCTACGACGTGCTGGGCGACGTGGTCTGCGGCGGCTTCGCCATGCCGATCCGCGAGAACAAGGCGCAGGAAATCTACATCGTCATGTCGGGCGAGATGATGGCGCTCTATGCGGCCAACAACATCGCCAAGGGCATCCTGAAATACGCGAACTCGGGCGGCGTGCGCCTCGGCGGCCTGATCTGCAACGAGCGCAAGACCGACCGCGAGCTGGAACTGGCCGAGGCCCTCGCCGCGCGTCTGGGCTGCAAGATGATCCACTTCGTTCCGCGCGACAATATCGTGCAGCACGCCGAGCTCCGCCGCGAGACGGTCATCCAGTATGCGCCCGAGAGCAAGCAGGCGCAGGAATATCGCGAACTGGCCCGCAAGATCCACGAGAACTCGGGCAAGGGCGTGATCCCGACCCCGATCACCATGGAAGAGCTGGAAGAGATGCTGATGGATTTCGGCATCATGCAGTCCGAGGAAGACCGGCTCGCCGCCATCGCCGCCGCCGAGGCCTGA'
 
 
-# def shuffle_string(s):
-#     """Shuffles the characters in the input string
-#         NOTE: this is a helper function, you do not
-#         have to modify this in any way """
-#     return ''.join(random.sample(s, len(s)))
+#from load import load_seq_paul
 
-# YOU WILL START YOUR IMPLEMENTATION FROM HERE DOWN ###
+#pauls_seq = load_seq_paul()
+#pauls_seq = 'GCCCGGACATTCTACATCTCCGCGAAAACACACACTTTTTCGTCTCCGGCGAAGCTTGGCACGCTCGTTGCAAAACAGGGATCAGCAAGGCGAGGGATGGTTGGCCGAGCAGTTACTGCAAAGGGCAACGTCCGCATCTGAGCCGTGCGACGGTTTTGAACGGAAGAAGGCTGCGCCTCGGCGCAAATCGATCAAGCGGCATTAGGTCAACGGAGAGAAAACATGGCACTTCGGCAAATCGCATTCTACGGCAAGGGCGGCATCGGCAAGTCGACCACCTCGCAGAACACCCTCGCGGCGCTGGTTGAGATGGGTCAGAAGATCCTGATCGTCGGCTGCGACCCCAAGGCGGACTCCACCCGTCTGATCCTCAACACCAAGATGCAGGACACGGTGCTGAGCCTCGCCGCGGAAGCGGGTTCGGTGGAAGACCTCGAACTCGAAGACGTGATGAAGATCGGCTACAAGGGCATCAAGTGCACCGAAGCCGGTGGCCCGGAGCCGGGCGTCGGCTGCGCCGGCCGCGGCGTTATCACCGCGATCAACTTCCTCGAAGAAAACGGCGCCTATGAAGACGTCGACTACGTCTCCTACGACGTGCTCGGCGACGTGGTGTGCGGCGGCTTCGCGATGCCGATCCGTGAAAACAAGGCGCAGGAAATCTACATCGTCATGTCCGGCGAGATGATGGCGCTGTATGCCGCCAACAACATCTCCAAGGGCATTCTGAAGTACGCTTCGTCGGGCGGCGTCCGTCTCGGCGGCCTGATCTGCAACGAGCGCCAGACCGACCGCGAGCTCGACCTCGCCGAAGCGCTGGCCAAGAAGCTGAACTCGAAGCTGATCCACTTCGTGCCGCGCGACAATATCGTGCAGCACGCCGAGCTGCGCCGCCAGACCGTGATCCAGTACGCGCCCGACAGCCAGCAGGCTAAGGAATATCGCGCCCTGGCCAACAAGGTCCATGCCAACTGCGGCAACGGCACCATCCCGACCCCGATCACCATGGAAGAGCTGGAAGAGATGCTGCTCGACTTCGGCATCATGAAGACCGAGGAGCAGCAGCTCGCCGAGCTCGCCGCCAAGGAAGCCGCCAAGGCGGCCGCGTCCGCCTGATCGCATCAGCCAGGCCGGTCGCCTAGCGCGACCGGCCGCCATCCCGGCGGCCCCAGACACGAGGAACAACGATGAGCACCGCAGTCGCAGAATCCCCCGCGGACATCAAGGAACGTAACAAGAAGCTGATCGGCGAAGTCCTGGAGGCCTATCCGGACAAGTCGGCCAAGCGTCGCGCCAAGCATCTCAACACGTACGACGCCGAGAAGGCGGAGTGCTCGGTCAAGTCCAACATCAAGTCGATCCCGGGCGTGATGACGATCCGCGGTTGCGCCTACGCCGGCTCGAAGGGCGTGGTGTGGGGCCCGATCAAGGACATGGTCCACATCAGCCACGGCCCGGTCGGCTGCGGCCAGTATTCGTGGGGTTCGCGCCGCAACTATTACAAGGGAACCACCGGCGTCGACACTTTCGGCACGATGCAGTTCACCTCCGACTTCCAGGAGAAGGACATCGTTTTCGGCGGTGACAAGAAGCTCGGCAAGATCATCGACGAGATCCAGGAGCTGTTCCCGCTCTCCAAGGGCATCTCGGTGCAGTCGGAATGCCCGATCGGTCTGATCGGCGACGACATCGAGGCGGTCTCCAAGGCCAAGTCGAAGCAGTATGACGGCAAGCCGATCATCCCGGTCCGCTGCGAAGGCTTCCGCGGCGTGTCGCAGTCGCTCGGCCACCACATCGCCAACGACGTGATCCGTGACTGGGTGTTCGACAAGGCCGCCGAGAAGAACGCCGGCTTCCAGTCGACCCCCTACGACGTCGCGATCATCGGCGACTACAACATCGGCGGCGATGCCTGGGCCTCGCGCATCCTGCTCGAGGAAATGGGCCTCCGCGTGATCGCGCAGTGGTCCGGCGACGGCACCATCGCGGAGCTGGAGAACACCCCGAAGGCGAAGCTGAACATCCTGCACTGCTACCGCTCGATGAACTACATCACGCGGCACATGGAAGAGAAGTTCGGTATTCCGTGGGTTGAATACAACTTCTTCGGCCCGTCCAAGATCGA'
+
+#Loading the nitrogenase
+
+#from load import load_seq
+#from load import load_nitrogenase_seq
+#nitrogenase = load_nitrogenase_seq()
 
 
 def get_complement(nucleotide):
     """ Returns the complementary nucleotide
-
         nucleotide: a nucleotide (A, C, G, or T) represented as a string
         returns: the complementary nucleotide
     >>> get_complement('A')
@@ -61,7 +69,6 @@ def get_complement(nucleotide):
 def get_reverse_complement(dna):
     """ Computes the reverse complementary sequence of DNA for the specfied DNA
         sequence
-
         dna: a DNA sequence represented as a string
         returns: the reverse complementary DNA sequence represented as a string
     >>> get_reverse_complement("ATGCCCGCTTT")
@@ -75,7 +82,13 @@ def get_reverse_complement(dna):
     #for character in(dna):
      #   print character
 
-    dnalist = list(dna) #dna in correct order
+
+    #dnalist = list(dna) #dna in correct order
+    #finallist = [get_complement(element) for element in dnalist]
+    #finalstring = ''.join(finallist)
+    #return finalstring
+
+    dnalist = list (dna) #dna in correct order
     dnalist.reverse() #dna in complement order now
     finallist = list() #create a totally empty list
     #for item in dnalist:
@@ -85,7 +98,6 @@ def get_reverse_complement(dna):
         finallist.append(element) #stick that one on the end
         finalstring = ''.join(finallist) #smoosh the list into a string
     return finalstring
- #FIXME: too slow a method nom nom memory
 
 def find_stop(dna):
     """
@@ -99,6 +111,7 @@ def find_stop(dna):
     >>> find_stop("ATAAAA")
     -1
     """
+    #try/except
     for i in range(len(dna)):
         codon = dna[i:i+3]
         if codon == 'TAG' and i%3 == 0: #if it's in the frame and is a stop codon
@@ -107,9 +120,8 @@ def find_stop(dna):
             return i
         elif codon == 'TGA' and i%3 == 0: #same
             return i
-    return -1 # if we get here, it means we didn't find a stop so we want a -1 for logic
-    #FIXED: this may not function correctly if there are multiple stop codons! all better
 
+    return -1 # if we get here, it means we didn't find a stop so we want a -1 for logic
 
 
 def rest_of_ORF(dna):
@@ -117,29 +129,26 @@ def rest_of_ORF(dna):
         codon and returns the sequence up to but not including the
         first in frame stop codon.  If there is no in frame stop codon,
         returns the whole string.
-
         dna: a DNA sequence
         returns: the open reading frame represented as a string
-    >>> rest_of_ORF("ATGTGAA")
-    'ATG'
+>>> rest_of_ORF("ATGTGAA")
+['ATG', 3]
     >>> rest_of_ORF("ATGAGATAGG")
-    'ATGAGA'
+    ['ATGAGA', 6]
     >>> rest_of_ORF("ATGAGTAGATAGTAG")
-    'ATGAGTAGA'
-    >>> rest_of_ORF("TGA")
-    ''
+    ['ATGAGTAGA', 9]
+    >>> rest_of_ORF("ACCTGA")
+    ['ACC', 3]
     >>> rest_of_ORF("AAAAA")
-    'AAAAA'
+    ['AAAAA', -1]
     """
-
-
 
     stoplocation = find_stop(dna) #get where to stop
     if stoplocation > 0 or stoplocation == 0: #if it's a reasonable place to stop
-        output_sequence = dna[:stoplocation] #slice the dna appropriately
-        return output_sequence #and spit that out
+        output_sequence = dna[:stoplocation] #slice the dna appropriately +3
+        return [output_sequence, stoplocation] #and spit that out
     elif stoplocation <0: #otherwise just don't change the DNA and output it as is
-        return dna
+        return [dna, stoplocation]
 
 
 def find_start(dna):
@@ -154,9 +163,6 @@ def find_start(dna):
     >>> find_start("ATG")
     0
     """
-    # PYTHON COUNTS FROM ZERO
-
-
 
     for i in range(len(dna)):
         codon = dna[i:i+3] #get a codon
@@ -167,7 +173,6 @@ def find_start(dna):
         #   continue
     return -1 #for logic
 
-    # when we get here, THERE ARE NO START CODONS SO WE ERROR
 
 def find_all_ORFs_oneframe(dna):
     """ Finds all non-nested open reading frames in the given DNA
@@ -176,28 +181,28 @@ def find_all_ORFs_oneframe(dna):
         (i.e. they start on indices that are multiples of 3).
         By non-nested we mean that if an ORF occurs entirely within
         another ORF, it should not be included in the returned list of ORFs.
-
         dna: a DNA sequence
         returns: a list of non-nested ORFs
     >>> find_all_ORFs_oneframe("ATGCATGAATGTAGATAGATGTGCCC")
-    ['ATGCATGAATGTAGA', 'ATGTGCCC']
+    [['ATGCATGAATGTAGA', 0, 15], ['ATGTGCCC', 3, -1]]
     >>> find_all_ORFs_oneframe("CCCATGCATGAATGTAGATAGATGTGCCC")
-    ['ATGCATGAATGTAGA', 'ATGTGCCC']
+    [['ATGCATGAATGTAGA', 3, 15], ['ATGTGCCC', 3, -1]]
     >>> find_all_ORFs_oneframe("CCAATTA")
     []
     """
-
-
-
     # have to start from previous stop location
     startlocation =find_start(dna)
     dnalist = [] # blank list
 
     while  startlocation >= 0: # we want to stop after we get to the end
-        orfout = rest_of_ORF(dna[startlocation:]) #get the rest of the orf
+        rest_of_ORF_output = rest_of_ORF(dna[startlocation:])
+        orfout =  rest_of_ORF_output[0] #get the rest of the orf
+        end_of_this_orf = rest_of_ORF_output[1]
+        start_of_this_orf = startlocation
         dna = dna[startlocation + len(orfout):] #slice the orf off the dna
-        dnalist.append(orfout) #add the orf to the list of orfs
+        dnalist.append([orfout, start_of_this_orf, end_of_this_orf]) #add the orf and start/stop location to the list of orfs
         startlocation =find_start(dna) #get a new start location
+        #print startlocation
     return dnalist
 
 
@@ -208,68 +213,80 @@ def find_all_ORFs(dna):
         mean that if an ORF occurs entirely within another ORF and they are
         both in the same frame, it should not be included in the returned list
         of ORFs.
-
         dna: a DNA sequence
         returns: a list of non-nested ORFs
-
     >>> find_all_ORFs("ATGCATGAATGTAG")
-    ['ATGCATGAATGTAG', 'ATGAATGTAG', 'ATG']
+    [['ATGCATGAATGTAG', 0, -1], ['ATGAATGTAG', 3, -1], ['ATG', 6, 3]]
     >>> find_all_ORFs("")
     []
     """
-    dnalist1= find_all_ORFs_oneframe(dna) # use the default reading frame, find orfs
-    dnalist2 =find_all_ORFs_oneframe(dna[1:]) #shift by one, find orfs
-    dnalist3 = find_all_ORFs_oneframe(dna[2:]) #using C so that it can't add a start codon, just shifting it by two now, find ords
-    finaldnalist = []
-    finaldnalist.extend(dnalist1)
-    finaldnalist.extend(dnalist2) #and just make a big list
-    finaldnalist.extend(dnalist3)
-    return finaldnalist
+
+    ORFs = []
+    ORFs.extend((find_all_ORFs_oneframe(dna[0:])))
+    ORFs.extend((find_all_ORFs_oneframe(dna[1:])))
+    ORFs.extend((find_all_ORFs_oneframe(dna[2:])))
+
+
+
+
+    return ORFs
+
+
 
 def find_all_ORFs_both_strands(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence on both
         strands.
-
         dna: a DNA sequence
         returns: a list of non-nested ORFs
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
-    ['ATGCGAATG', 'ATGCTACATTCGCAT']
+    [['ATGCGAATG', 0, 9], ['ATGCTACATTCGCAT', 3, -1]]
     >>> find_all_ORFs_both_strands("ATGCGAATG")
-    ['ATGCGAATG']
+    [['ATGCGAATG', 0, -1]]
+
     """
-    regularorfs= find_all_ORFs(dna) # get all orfs on the regular strand
-    revdna=get_reverse_complement(dna) # get the reverse complement
-    revorfs = find_all_ORFs(revdna) #find the orfs of the reverse complement
+    regular_orfs= find_all_ORFs(dna) # get all orfs on the regular strand
+    for item in regular_orfs:
+        item.append(0) #0 for regular strand
+    #print regularorfs
+
+    rev_dna=get_reverse_complement(dna) # get the reverse complement
+    rev_orfs = find_all_ORFs(rev_dna) #find the orfs of the reverse complement
+    for item in rev_orfs:
+        item.append(1) #1 for reverse strand
+
     finaldnalist = [] #stick em together on a list!
-    finaldnalist.extend(regularorfs)
-    finaldnalist.extend(revorfs)
+    finaldnalist.extend(regular_orfs)
+    finaldnalist.extend(rev_orfs)
+    #print finaldnalist
     return finaldnalist
 
-# stop here for week1
+
 
 def longest_ORF(dna):
     """ Finds the longest ORF on both strands of the specified DNA and returns it
-        as a string
+        as a string #TAA TGA TAG
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
-    'ATGCTACATTCGCAT'
+    ['ATGCTACATTCGCAT', 3, -1]
     >>> longest_ORF("AAAAAAAA")
-    ''
+    ['']
     """
+    # TAA TGA TAG
     lenlist = []
     orflist = find_all_ORFs_both_strands(dna)
     if orflist == []:
-        return ''
-    for i in orflist:
-        lenlist.append(len(i)) #add length of that item in the orf list to the end of the length list
+        return ['']
+    for item in orflist:
+        lenlist.append(len(item[0])) #add length of that item in the orf list to the end of the length list
+        #print lenlist
     longestorfloc=lenlist.index(max(lenlist))
     longestorf = orflist[longestorfloc]
+    #print orflist
     return longestorf
 
 
 def longest_ORF_noncoding(dna, num_trials):
     """ Computes the maximum length of the longest ORF over num_trials shuffles
         of the specfied DNA sequence
-
         dna: a DNA sequence
         num_trials: the number of random shuffles
         returns: the maximum length longest ORF """
@@ -279,72 +296,62 @@ def longest_ORF_noncoding(dna, num_trials):
     while i < num_trials:
         i = i +1
         randomdna = dna
-        # randomdna=shuffle_string(dna)
         longestorf=longest_ORF(randomdna)
-        #lengths.append(len(longestorf))
         if len(longestorf)>lengthy:
             lengthy = len(longestorf)
-        #else: SO I know this is what it does:
-        #    lengthy = lengthy
-    #sortedlength = sorted(lengths)
-    #finallongest = sortedlength[num_trials-1] #biggest length
-    #return finallongest
     return lengthy
-#print longest_ORF_noncoding("ATGCGAATGTAGCATCAAA", 5)
-
-def coding_strand_to_AA(dna):
-    """ Computes the Protein encoded by a sequence of DNA.  This function
-        does not check for start and stop codons (it assumes that the input
-        DNA sequence represents an protein coding region).
-
-        dna: a DNA sequence represented as a string
-        returns: a string containing the sequence of amino acids encoded by the
-                 the input DNA fragment
-
-        >>> coding_strand_to_AA("ATGCGA")
-        'MR'
-        >>> coding_strand_to_AA("ATGCCCGCTTT")
-        'MPA'
-        >>> coding_strand_to_AA("ATGCTCCTTATC")
-        'MLLI'
-    """
-    aminoacidsequence = ''
-    for i in range(len(dna)/3):
-        codon = dna[3*i:3*i+3] #get a codon
-        amino_acid = aa_table[codon] #LOOK up the codon
-        aminoacidsequence = aminoacidsequence + amino_acid #add the new amino acid onto the end
-    return aminoacidsequence
 
 
-def gene_finder(dna):
-    """ Returns the amino acid sequences that are likely coded by the specified dna
 
-        dna: a DNA sequence
-        returns: a list of all amino acid sequences coded by the sequence dna.
-    """
-    aminoacids = []
-    threshold = longest_ORF_noncoding (dna,1500)
-    orflist = find_all_ORFs_both_strands(dna)
-    for i in orflist:
-        if len(i) >= threshold: #else ignore that item in the list
-            aminoacids.append(coding_strand_to_AA(i)) # get the amino acids for that dna sequence in the list and append that item to the list
-    return orflist
 
-#GOING BEYOND CODE BEGINS HERE 
-i = 0 
-for element in dna: 
-    for word in b: 
-        for myword in nitrogenase: 
-            if myword == word:
-                n[myword] = n.get(nitrogenase[i], 0) + 1
-                nitrogenase
-        negative = sum(n.values())
-       
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-    from load import load_seq
-    # dna = "ATGCGAATGTAGCATCAAA"
-    # dna = load_seq("./data/X73525.fa") #From earlier code. 
-    dna = metagenome[0][1] #Putting the metagenome into genefinder. 
-    print gene_finder(dna)
+
+
+#GOING BEYOND CODE BEGINS HERE THIS IS ALL MOVING TO NITROGENASE
+
+
+
+
+
+#if __name__ == "__main__":
+
+
+
+    #i = 0
+
+    ##for a in metagenome:    #a is each tuple that is (label, DNA) in metagenome
+    ##    dna = a[1]
+    # #   holder_dna = []
+    # #   snippet = find_all_ORFs_both_strands(dna)
+    # #   for item in snippet:
+    # #       #print item
+    # #       if len(item) > .8*len(nitrogenase):
+    # #           holder_dna.append(item)
+    # #   print str(len(holder_dna)) + " number of matches"
+    # #   for item in holder_dna:
+    # #       print str(len(item)) + " item length", str(len(nitrogenase)) + " nitrogenase length"
+    # #       print levenshtein(item,nitrogenase) + " distance"
+
+    #dna = pauls_seq
+    ##print len(dna)
+    #holder_dna = []
+    #snippet = find_all_ORFs_both_strands(dna)
+    ##print snippet
+    #for item in snippet:
+     #   #print item
+     #   #for
+      #  if len(item[0]) > .8*len(nitrogenase):
+      #      holder_dna.append(item)
+       # #holder_dna.append(item)
+
+
+    #data_output_tuple_list = []
+    ##print str(len(holder_dna)) + " number of matches"
+    #for item in holder_dna:
+     #   #print str(len(item)) + " item length", str(len(nitrogenase)) + " nitrogenase length"
+     #   #print str(levenshtein(item,nitrogenase)) + " distance"
+      #  #print str(abs(len(item)-levenshtein(item,nitrogenase))/len(item)) + '%'
+      #  levenshtein_val = levenshtein(item[0], nitrogenase)
+      #  percent_match = abs(float(len(item[0]))-float(levenshtein_val))/float(len(item[0])) * 100
+      #  data_output_tuple_list.append( ( len(item), len(nitrogenase), levenshtein_val, percent_match )) #,loc_in_item_start, loc_in_item_end
+    #print data_output_tuple_list
+
