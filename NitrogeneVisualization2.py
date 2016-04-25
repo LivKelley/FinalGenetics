@@ -1,13 +1,13 @@
 #This code produces an interactive graph for the nitrogene code using pygame. 
 
 import pygame 
+import pickle
 import time 
 import sys 
+from pickle import dump
 from random import choice
-Example_Genome = [(0, 19), (.5, 25), (0, 20)] 
-Example_Genome2 = [(0, 15), (.5 , 40), (0, 20), (.9, 10),(.4, 90), (.8, 60),(.7, 30), (.2, 10)]
-Example_Genome3 = [(0, 15), (.5 , 40), (0, 20), (.9, 10),(.4, 90)]
-Genome_List = [Example_Genome, Example_Genome2, Example_Genome3] #Do we need code that puts each genome list into such a megalist or breaks them out of it (depending on Nitrogene's output?)
+
+pauls_seq = 'GCCCGGACATTCTACATCTCCGCGAAAACACACACTTTTTCGTCTCCGGCGAAGCTTGGCACGCTCGTTGCAAAACAGGGATCAGCAAGGCGAGGGATGGTTGGCCGAGCAGTTACTGCAAAGGGCAACGTCCGCATCTGAGCCGTGCGACGGTTTTGAACGGAAGAAGGCTGCGCCTCGGCGCAAATCGATCAAGCGGCATTAGGTCAACGGAGAGAAAACATGGCACTTCGGCAAATCGCATTCTACGGCAAGGGCGGCATCGGCAAGTCGACCACCTCGCAGAACACCCTCGCGGCGCTGGTTGAGATGGGTCAGAAGATCCTGATCGTCGGCTGCGACCCCAAGGCGGACTCCACCCGTCTGATCCTCAACACCAAGATGCAGGACACGGTGCTGAGCCTCGCCGCGGAAGCGGGTTCGGTGGAAGACCTCGAACTCGAAGACGTGATGAAGATCGGCTACAAGGGCATCAAGTGCACCGAAGCCGGTGGCCCGGAGCCGGGCGTCGGCTGCGCCGGCCGCGGCGTTATCACCGCGATCAACTTCCTCGAAGAAAACGGCGCCTATGAAGACGTCGACTACGTCTCCTACGACGTGCTCGGCGACGTGGTGTGCGGCGGCTTCGCGATGCCGATCCGTGAAAACAAGGCGCAGGAAATCTACATCGTCATGTCCGGCGAGATGATGGCGCTGTATGCCGCCAACAACATCTCCAAGGGCATTCTGAAGTACGCTTCGTCGGGCGGCGTCCGTCTCGGCGGCCTGATCTGCAACGAGCGCCAGACCGACCGCGAGCTCGACCTCGCCGAAGCGCTGGCCAAGAAGCTGAACTCGAAGCTGATCCACTTCGTGCCGCGCGACAATATCGTGCAGCACGCCGAGCTGCGCCGCCAGACCGTGATCCAGTACGCGCCCGACAGCCAGCAGGCTAAGGAATATCGCGCCCTGGCCAACAAGGTCCATGCCAACTGCGGCAACGGCACCATCCCGACCCCGATCACCATGGAAGAGCTGGAAGAGATGCTGCTCGACTTCGGCATCATGAAGACCGAGGAGCAGCAGCTCGCCGAGCTCGCCGCCAAGGAAGCCGCCAAGGCGGCCGCGTCCGCCTGATCGCATCAGCCAGGCCGGTCGCCTAGCGCGACCGGCCGCCATCCCGGCGGCCCCAGACACGAGGAACAACGATGAGCACCGCAGTCGCAGAATCCCCCGCGGACATCAAGGAACGTAACAAGAAGCTGATCGGCGAAGTCCTGGAGGCCTATCCGGACAAGTCGGCCAAGCGTCGCGCCAAGCATCTCAACACGTACGACGCCGAGAAGGCGGAGTGCTCGGTCAAGTCCAACATCAAGTCGATCCCGGGCGTGATGACGATCCGCGGTTGCGCCTACGCCGGCTCGAAGGGCGTGGTGTGGGGCCCGATCAAGGACATGGTCCACATCAGCCACGGCCCGGTCGGCTGCGGCCAGTATTCGTGGGGTTCGCGCCGCAACTATTACAAGGGAACCACCGGCGTCGACACTTTCGGCACGATGCAGTTCACCTCCGACTTCCAGGAGAAGGACATCGTTTTCGGCGGTGACAAGAAGCTCGGCAAGATCATCGACGAGATCCAGGAGCTGTTCCCGCTCTCCAAGGGCATCTCGGTGCAGTCGGAATGCCCGATCGGTCTGATCGGCGACGACATCGAGGCGGTCTCCAAGGCCAAGTCGAAGCAGTATGACGGCAAGCCGATCATCCCGGTCCGCTGCGAAGGCTTCCGCGGCGTGTCGCAGTCGCTCGGCCACCACATCGCCAACGACGTGATCCGTGACTGGGTGTTCGACAAGGCCGCCGAGAAGAACGCCGGCTTCCAGTCGACCCCCTACGACGTCGCGATCATCGGCGACTACAACATCGGCGGCGATGCCTGGGCCTCGCGCATCCTGCTCGAGGAAATGGGCCTCCGCGTGATCGCGCAGTGGTCCGGCGACGGCACCATCGCGGAGCTGGAGAACACCCCGAAGGCGAAGCTGAACATCCTGCACTGCTACCGCTCGATGAACTACATCACGCGGCACATGGAAGAGAAGTTCGGTATTCCGTGGGTTGAATACAACTTCTTCGGCCCGTCCAAGATCGA'
 
 #Code to determine variables 
 
@@ -16,26 +16,40 @@ Genome_List = [Example_Genome, Example_Genome2, Example_Genome3] #Do we need cod
 #Changing variables 
 #Initializing objects: 
 
+
 class Nitrogene_Graph_Model(object): 
     def __init__(self, size):
         """Initialize within the specialized model""" 
         self.WIDTH = size
         self.left = size[0]
-        
+        self.sorter_code(self.code_loader())
+    def code_loader (self):
+        return pickle.load(open('genes_found.pickle'))
 
+    def sorter_code (self, list_of_orfs_imported):
+
+        self.forward_only_orf = []
+        complement_only_orf = []
+        for item in list_of_orfs_imported:
+            if item[6] == 0:
+                self.forward_only_orf.append(item) 
+            elif item[6] == 1:
+                complement_only_orf.append(item)
 #View - draw functions 
 
 #Adapted from PolkaDots game from the previous project.
 class Nitrogene_Graph_View (object):
-    def __init__(self, model):
+    def __init__(self, model, forward_only_orf, genome):
         self.screen = pygame.display.set_mode(size)
         self.model = model 
         self.threshold = raw_input("Please type a two digit decimal representing the DNA accuracy threshold percentage. Example: .20 would be 20%.")
         self.Genome_Bar_Height = 30 
+        self.forward_only_orf = forward_only_orf
+        self.genome = genome
+        self.comp_fact = 10 # compression factor
 
     def draw(self): 
         """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
-
 
         Mouse_Position = pygame.mouse.get_pos()
 
@@ -51,55 +65,89 @@ class Nitrogene_Graph_View (object):
         background.blit(text, textpos)
         screen.blit(background, (0,0))
 
+        #Making the rectangle for the main gene.
 
-        for genome_num,Genome in enumerate(Genome_List):
+        length = len(self.genome)
+
+        length_rectangle = pygame.Rect(1,
+                                       self.Genome_Bar_Height + 10,
+                                       length/self.comp_fact, 
+                                       self.Genome_Bar_Height
+                                       )
+
+
+        pygame.draw.rect(self.screen, (255,0,0,0), length_rectangle, 0)
+
+        #Looping through orfs 
+
+        for orf_num, orf in enumerate(self.forward_only_orf):
             #Creating the stacking elements that build the bar graph for false values
-            current = 0
+            current_orf = 0
 
-            for gene_num,gene in enumerate(Genome):
+            #Drawing the orf 
 
-                rectangle = pygame.Rect(current, 
-                        ((genome_num+1))*(self.Genome_Bar_Height) + genome_num * 10,
-                        gene[1], 
-                        (self.Genome_Bar_Height)
-                         )
+            orf_rectangle = pygame.Rect(orf[4],
+                                        (orf_num+1)*(self.Genome_Bar_Height) + orf_num*10,
+                                        orf[5]/self.comp_fact- orf[4]/self.comp_fact,
+                                        self.Genome_Bar_Height
+                                        )
+            # pygame.draw.rect(self.screen, (100,0,0,0), orf_rectangle, 0)
 
-                if 0 <= gene[0] <= float(self.threshold):
+            #Drawing nitrogenases on the orf  
 
-                    pygame.draw.rect(self.screen, (0, 0, 0, 0), rectangle, 0)
-                    
-                    #Iterate through the rest of the sequence. 
+            #nitrogenase_rectangle = pygame.Rect(current_orf- orf[4], 
+                    #(orf_num+1)*(self.Genome_Bar_Height) + orf_num * 10,
+                    #orf[1], 
+                    #(self.Genome_Bar_Height)
+                     #)
 
-                elif gene[0] >= float(self.threshold): 
-                    color_match = (0, gene[0]*255, 0, 0) 
-                    pygame.draw.rect(self.screen, color_match, rectangle, 0)
+            if 0 <= orf[2] <= float(self.threshold):
 
-                current += gene[1]
-
-            current = 0
-
-            for gene_num,gene in enumerate(Genome):
-
-                rectangle = pygame.Rect(current,                                        #left
-                        ((genome_num+1))*(self.Genome_Bar_Height + genome_num * 10),    #top
-                        gene[1],                                                        #width
-                        (self.Genome_Bar_Height)                                        #height
-                        )
-
-                if rectangle.collidepoint(Mouse_Position):
-                    font = pygame.font.Font(None, 26)
-                    text = font.render(("   " + str(gene[0]*100) + " %"), 1, (50, 0, 200))
-                    screen.blit(text, (Mouse_Position))
+                pygame.draw.rect(self.screen, (0, 0, 0, 0), orf_rectangle, 0)
                 
-                current += gene[1]
+                #Iterate through the rest of the sequence. 
+
+            elif orf[2] >= float(self.threshold): 
+                color_match = (0, orf[3], 0, 0) 
+                pygame.draw.rect(self.screen, color_match, orf_rectangle, 0)
+
+            current_orf += orf[0] + 1 
+
+            current = 0
+
+            #Scrolling
+
+            for orf_num, orf in (enumerate(self.forward_only_orf)):
+
+                orf_rectangle = pygame.Rect(current_orf,
+                                        (orf_num+1)*(self.Genome_Bar_Height) + orf_num*10,
+                                        orf[5]/self.comp_fact-orf[4]/self.comp_fact,
+                                        self.Genome_Bar_Height
+                                        )
+                pygame.draw.rect(self.screen, (255,0,0,0), orf_rectangle, 0)
+
+                if orf_rectangle.collidepoint(Mouse_Position):
+                    font = pygame.font.Font(None, 26)
+                    text = font.render(("   " + str(orf[2]*100) + " %"), 1, (50, 0, 200))
+                    screen.blit(text, (Mouse_Position))
+
+                #Drawing nitrogenases on the general 
+
+                # nitrogenase_rectangle = pygame.Rect(current_orf- orf[4], 
+                #         (orf_num+1)*(self.Genome_Bar_Height) + orf_num * 10,
+                #         orf[1], 
+                #         (self.Genome_Bar_Height)
+                #          )
+
+                # if nitrogenase_rectangle.collidepoint(Mouse_Position):
+                #     font = pygame.font.Font(None, 26)
+                #     text = font.render(("   " + str(orf[2]*100) + " %"), 1, (50, 0, 200))
+                #     screen.blit(text, (Mouse_Position))
+                
+                #     current_orf += orf[0]+1
 
 
         pygame.display.flip()
-
-
-#class Nitrogene_Controller(): 
-    #pygame.mouse.set_cursor(pygame.cursors.arrow)
-
 
 #Running the Code (Adapted from the in class brick breaker code.)
 if __name__ == '__main__':
@@ -107,7 +155,7 @@ if __name__ == '__main__':
     pygame.init() 
     size = (640, 480)
     model = Nitrogene_Graph_Model(size)  
-    view = Nitrogene_Graph_View(model)
+    view = Nitrogene_Graph_View(model, model.forward_only_orf, pauls_seq)
     screen = pygame.display.set_mode(size) #This is the surface you want to draw to.
     #Initialize left and WIDTH 
     running = True
