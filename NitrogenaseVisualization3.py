@@ -42,7 +42,7 @@ class Nitrogene_Graph_View (object):
     def __init__(self, model, forward_only_orf, genome):
         self.screen = pygame.display.set_mode(size)
         self.model = model 
-        self.threshold = .5 #float(raw_input("Please type a two digit decimal representing the DNA accuracy threshold percentage. Example: .20 would be 20%."))
+        self.threshold = float(raw_input("Please type a two digit number representing the DNA accuracy threshold percentage."))
         self.Genome_Bar_Height = 30 
         self.forward_only_orf = forward_only_orf
         self.genome = genome
@@ -90,17 +90,17 @@ class Nitrogene_Graph_View (object):
 
         orf_rectangle = pygame.Rect(orf[4],
                                     self.Genome_Bar_Height+10,#(orf_num+1)*(self.Genome_Bar_Height) + orf_num*10
-                                    orf[5]/self.comp_fact- orf[4]/self.comp_fact,
+                                    (orf[5]- orf[4])/self.comp_fact,
                                     self.Genome_Bar_Height
                                     )
         
-        if 0 <= orf[2] <= self.threshold:
+        if 0 <= orf[3] <= self.threshold:
 
             pygame.draw.rect(self.screen, (0, 0, 0, 0), orf_rectangle, 0)
             
             #Iterate through the rest of the sequence. 
 
-        elif orf[2] >= self.threshold: 
+        elif orf[3] >= self.threshold: 
             color_match = (0, orf[3], 0, 0) 
             pygame.draw.rect(self.screen, color_match, orf_rectangle, 0)
 
@@ -117,7 +117,7 @@ class Nitrogene_Graph_View (object):
 
         if orf_rectangle.collidepoint(Mouse_Position):
             font = pygame.font.Font(None, 26)
-            text = font.render(("   " + str(orf[2]*100) + " %"), 1, (50, 0, 200))
+            text = font.render(("   " + str(int(orf[3])) + " %"), 1, (50, 0, 200))
             screen.blit(text, (Mouse_Position))
 
         pygame.display.flip()
@@ -138,4 +138,4 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
         view.draw() 
-        time.sleep(.001)
+        time.sleep(.0)
