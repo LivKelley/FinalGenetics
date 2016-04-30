@@ -108,7 +108,7 @@ class Nitrogene_Graph_View (object):
                 #Iterate through the rest of the sequence. 
 
             elif orf[2] >= float(self.threshold): 
-                color_match = (0, orf[3], 0, 0) 
+                color_match = (0, (255*orf[3])/100, 0, 0) 
                 pygame.draw.rect(self.screen, color_match, orf_rectangle, 0)
 
             current_orf += orf[0] + 1 

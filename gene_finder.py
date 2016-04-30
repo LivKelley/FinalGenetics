@@ -96,8 +96,12 @@ def get_reverse_complement(dna):
     for element in dnalist: #taking reversed element list, getting complement, putting it in final list
         element = get_complement(element) #now we have the complement
         finallist.append(element) #stick that one on the end
-        finalstring = ''.join(finallist) #smoosh the list into a string
-    return finalstring
+        try:
+            finalstring = ''.join(finallist) #smoosh the list into a string
+            return finalstring
+        except TypeError:
+            print "TypeError", finallist
+    
 
 def find_stop(dna):
     """
@@ -163,7 +167,6 @@ def find_start(dna):
     >>> find_start("ATG")
     0
     """
-
     for i in range(len(dna)):
         codon = dna[i:i+3] #get a codon
         if codon == 'ATG' and i%3 == 0: #make sure it's a start codon and it's lined up correctly
@@ -221,10 +224,21 @@ def find_all_ORFs(dna):
     []
     """
 
-    ORFs = []
-    ORFs.extend((find_all_ORFs_oneframe(dna[0:])))
-    ORFs.extend((find_all_ORFs_oneframe(dna[1:])))
-    ORFs.extend((find_all_ORFs_oneframe(dna[2:])))
+    #works but is slightly slower
+    # ORFs = []
+    # ORFs.extend((find_all_ORFs_oneframe(dna[0:])))
+    # ORFs.extend((find_all_ORFs_oneframe(dna[1:])))
+    # ORFs.extend((find_all_ORFs_oneframe(dna[2:])))
+
+    #slightly faster 
+    dnalist1= find_all_ORFs_oneframe(dna) # use the default reading frame, find orfs
+    dnalist2 =find_all_ORFs_oneframe(dna[1:]) #shift by one, find orfs
+    dnalist3 = find_all_ORFs_oneframe(dna[2:]) #using C so that it can't add a start codon, just shifting it by two now, find ords
+    finaldnalist = []
+    finaldnalist.extend(dnalist1)
+    finaldnalist.extend(dnalist2) #and just make a big list
+    finaldnalist.extend(dnalist3)
+    return finaldnalist
 
 
 
