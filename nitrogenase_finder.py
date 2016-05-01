@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 holder_dna.append(item)
 
 
-    data_output_dict = []
+    data_output= []
     #print str(len(holder_dna)) + " number of matches"
     print 'length of holder_dna', len(holder_dna)
     lengths = [len(item[0]) for item in holder_dna]
@@ -71,44 +71,10 @@ if __name__ == "__main__":
         start = item[1]
         end = item[2]
         rev_flag = item[3]
-
-        data_output_dict.append({'item_length': len(item[0]), 'nitrogenase_length': len(nitrogenase, 'levenshtein_value' = levenshtein_val, 'percent_match' : percent_match, 'start': start, 'end':end, 'forwardorcomplement':rev_flag }) #,loc_in_item_start, loc_in_item_end
-
-    print data_output_dict
-
-
-    #     # snippet = longest_ORF(dna)
-    #     # print len(snippet)
-
-    #     i += 1
-
-    #     if nitrogenase in snippet:
-    #         print 'True',   i #dna
-    #     else:
-    #         print 'False'
-
-    # snippet = gene_finder(metagenome[10][1])
-    # if nitrogenase in snippet:
-    #     print i #dna
-    # else:
-
-    #     print 'False'
-
-
-    # i = 0
-    # snippet = gene_finder(metagenome)
-    # for c in snippet:
-    #     print c #no stop codon
-    # print nitrogenase
-    # if nitrogenase in snippet:
-    #     print 'True', i #dna
-    # else:
-    #     i += 1
-    #     print 'False'
+        data_output.append((len(item[0]), len(nitrogenase), levenshtein_val, percent_match, start, end, rev_flag )) #,loc_in_item_start, loc_in_item_end
+    print data_output
 
     save_file = open('genes_found.pickle', 'w')
-    pickle.dump(data_output_dict, save_file)
+    pickle.dump(data_output, save_file)
     save_file.close()
-
-
-
+      
