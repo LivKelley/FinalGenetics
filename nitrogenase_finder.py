@@ -71,7 +71,7 @@ if __name__ == "__main__":
         start = item[1]
         end = item[2]
         rev_flag = item[3]
-        data_output.append((len(item[0]), len(nitrogenase), levenshtein_val, percent_match, start, end, rev_flag )) #,loc_in_item_start, loc_in_item_end
+        data_output.append({'length': len(item[0]), 'nitrogenase_length': len(nitrogenase), 'levenshtein_val': levenshtein_val, 'percent_match': percent_match, 'start': start, 'end': end, 'forcomp':rev_flag }) #,loc_in_item_start, loc_in_item_end
     print data_output
 
     save_file = open('genes_found.pickle', 'w')
