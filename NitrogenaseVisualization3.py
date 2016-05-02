@@ -39,17 +39,21 @@ class Nitrogene_Graph_Model(object):
 class Nitrogene_Graph_View (object):
     def __init__(self, model, forward_only_orf, complement_only_orf):
         self.screen = pygame.display.set_mode(size)
+        self.lscreen = pygame.surface.Surface(lsize)
+
         self.model = model 
         self.threshold = 20 #float(raw_input("Please type a two digit number representing the DNA accuracy threshold percentage."))
         self.Genome_Bar_Height = 30 
         self.forward_only_orf = forward_only_orf
         self.complement_only_orf = complement_only_orf
-        self.comp_fact = 10 # compression factor
+        self.comp_fact = 5 # compression factor
+        self.scroll_y = 0 
+        #self.rectangle_list = rectangle_list
 
+    #rectangle_list = []
 
     def draw(self): 
         """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
-        print 'Liv1'
         Mouse_Position = pygame.mouse.get_pos()
 
         self.screen.fill(pygame.Color('white'))
@@ -64,7 +68,7 @@ class Nitrogene_Graph_View (object):
         background.blit(text, textpos)
         screen.blit(background, (0,0))
 
-        pygame.draw.rect(self.screen, (0, 0, 100, 100), (size[0] +10, size[1]-11, 10, size[1]-21), 0) 
+        # pygame.draw.rect(self.screen, (0, 0, 100, 100), (size[0] +10, size[1]-11, 10, size[1]-21), 0) 
 
         # font = pygame.font.Font(None, 36)
         # text = font.render("Key", 1, (0, 0, 0))
@@ -79,21 +83,21 @@ class Nitrogene_Graph_View (object):
         # pygame.draw.rect(self.screen, (0, 250, 0, 0), (size[0] +1, size[1]-15, 5, size[1]-16), 0) 
         # pygame.draw.rect(self.screen, (0, 0, 0, 0), (size[0] +1, size[1]-19, 5, size[1]-20), 0) 
 
-        # # font = pygame.font.Font(None, 36)
+        # # font = pygame.font.Font(None, 12)
         # # text = font.render("Forward Short", 1, (0, 0, 0))
         # # textpos = text.get_rect()
         # # textpos.centerx = 300 
         # # background.blit(text, textpos)
         # # screen.blit(background, (0,0))
 
-        # # font = pygame.font.Font(None, 36)
+        # # font = pygame.font.Font(None, 12)
         # # text = font.render("Complement Short", 1, (0, 0, 0))
         # # textpos = text.get_rect()
         # # textpos.centerx = 300 
         # # background.blit(text, textpos)
         # # screen.blit(background, (0,0))
 
-        # # font = pygame.font.Font(None, 36)
+        # # font = pygame.font.Font(None, 12)
         # # text = font.render("Match", 1, (0, 0, 0))
         # # textpos = text.get_rect()
         # # textpos.centerx = 300 
@@ -101,7 +105,7 @@ class Nitrogene_Graph_View (object):
         # # screen.blit(background, (0,0))
 
 
-        # # font = pygame.font.Font(None, 36)
+        # # font = pygame.font.Font(None, 12)
         # # text = font.render("Non-Match", 1, (0, 0, 0))
         # # textpos = text.get_rect()
         # # textpos.centerx = 300 
@@ -110,84 +114,90 @@ class Nitrogene_Graph_View (object):
 
 
         #Looping through orfs 
+        print "LENGTH OF ORFS: ", len(self.forward_only_orf)
+
+
 
         for orf_num, orf in enumerate(self.forward_only_orf):
             #Creating the stacking elements that build the bar graph for false values
+
             length = orf[0]
 
             dna_length_rectangle = pygame.Rect(0,
-                                    self.Genome_Bar_Height + 10,
-                                    length/self.comp_fact, 
-                                    self.Genome_Bar_Height
-                                       )
+                                   (self.Genome_Bar_Height + 10)*orf_num+1,
+                                    length/self.comp_fact,
+                                   self.Genome_Bar_Height
+                                    )
 
+            pygame.draw.rect(self.lscreen, (0,0,200,100), dna_length_rectangle, 0)
 
-            pygame.draw.rect(self.screen, (0,0,100,100), dna_length_rectangle, 0)
-
-            orf = self.forward_only_orf[0]
-            orf_rectangle = pygame.Rect(orf[4],
-                                        self.Genome_Bar_Height+10,#(orf_num+1)*(self.Genome_Bar_Height) + orf_num*10
-                                        (orf[5] - orf[4])/self.comp_fact,
-                                        self.Genome_Bar_Height
-                                        )
-    
-            if 0 <= orf[3] <= self.threshold:
-
-                pygame.draw.rect(self.screen, (0, 0, 0, 0), orf_rectangle, 0)
-                
-                #Iterate through the rest of the sequence. 
-
-            elif orf[3] >= self.threshold: 
-                color_match = (0, orf[3], 0, 0) 
-                pygame.draw.rect(self.screen, color_match, orf_rectangle, 0)
-
-                #Scrolling
-
-            if orf_rectangle.collidepoint(Mouse_Position):
-                font = pygame.font.Font(None, 26)
-                text = font.render(("   " + str(int(orf[3])) + " %"), 1, (50, 0, 200))
-                screen.blit(text, (Mouse_Position))
-
-            Nitrogenase_Controller(self.Genome_Bar_Height)
-
-            
-            for complement_num, complement in enumerate(self. complement_only_orf): 
-                complement_length = complement[0]
-
-                complement_length_rectangle = pygame.Rect(0,
-                                       self.Genome_Bar_Height + 10,
-                                       complement_length/self.comp_fact, 
-                                       self.Genome_Bar_Height
-                                       )
-
-
-                pygame.draw.rect(self.screen, (0,0,200, 50), complement_length_rectangle, 0)
-                
-                complement_orf_rectangle = pygame.Rect(complement[4],
-                                        self.Genome_Bar_Height+10,#(orf_num+1)*(self.Genome_Bar_Height) + orf_num*10
-                                        (complement[5]- complement[4])/self.comp_fact,
-                                        self.Genome_Bar_Height
-                                        )
-
-
-                if 0 <= complement[3] <= self.threshold:
-
-                    pygame.draw.rect(self.screen, (0, 0, 0, 0), complement_orf_rectangle, 0)
-                    
-                    #Iterate through the rest of the sequence. 
-
-                elif complement[3] >= self.threshold: 
-                    color_match = (0, complement[3], 0, 0) 
-                    pygame.draw.rect(self.screen, color_match, complement_orf_rectangle, 0)
-
-                    #Scrolling
-
-                if orf_rectangle.collidepoint(Mouse_Position):
-                    font = pygame.font.Font(None, 26)
-                    text = font.render(("   " + str(int(complement[3])) + " %"), 1, (50, 0, 200))
-                    screen.blit(text, (Mouse_Position))
-                   
+        self.screen.blit(self.lscreen, (0, self.scroll_y))
         pygame.display.flip()
+            # orf = self.forward_only_orf[0]
+
+            # orf_rectangle = pygame.Rect(orf[4],
+            #                             (orf_num+1)*(self.Genome_Bar_Height),
+            #                             (orf[5] - orf[4])/self.comp_fact,
+            #                             self.Genome_Bar_Height
+            #                             )
+            # if 0 <= orf[3] <= self.threshold:
+
+            #     pygame.draw.rect(self.screen, (0, 0, 0, 0), orf_rectangle, 0)
+                
+            #     #Iterate through the rest of the sequence. 
+
+            # elif orf[3] >= self.threshold: 
+            #     color_match = (0, orf[3], 0, 0) 
+            #     pygame.draw.rect(self.screen, color_match, orf_rectangle, 0)
+
+            #     #Scrolling
+
+            # if orf_rectangle.collidepoint(Mouse_Position):
+            #     font = pygame.font.Font(None, 26)
+            #     text = font.render(("   " + str(int(orf[3])) + " %"), 1, (50, 0, 200))
+            #     screen.blit(text, (Mouse_Position))
+
+            # #self.Genome_Bar_Height += 50
+
+            # Nitrogenase_Controller(self.Genome_Bar_Height)
+            
+            # for complement_num, complement in enumerate(self. complement_only_orf): 
+            #     complement_length = complement[0]
+
+            #     complement_length_rectangle = pygame.Rect(0,
+            #                            self.Genome_Bar_Height + 10,
+            #                            complement_length/self.comp_fact, 
+            #                            self.Genome_Bar_Height
+            #                            )
+
+
+            #     pygame.draw.rect(self.screen, (0,0,200, 50), complement_length_rectangle, 0)
+                
+            #     complement_orf_rectangle = pygame.Rect(complement[4],
+            #                             self.Genome_Bar_Height+10,#(orf_num+1)*(self.Genome_Bar_Height) + orf_num*10
+            #                             (complement[5]- complement[4])/self.comp_fact,
+            #                             self.Genome_Bar_Height
+            #                             )
+
+
+            #     if 0 <= complement[3] <= self.threshold:
+
+            #         pygame.draw.rect(self.screen, (0, 0, 0, 0), complement_orf_rectangle, 0)
+                    
+            #         #Iterate through the rest of the sequence. 
+
+            #     elif complement[3] >= self.threshold: 
+            #         color_match = (0, complement[3], 0, 0) 
+            #         pygame.draw.rect(self.screen, color_match, complement_orf_rectangle, 0)
+
+            #         #Scrolling
+
+            #     if orf_rectangle.collidepoint(Mouse_Position):
+            #         font = pygame.font.Font(None, 26)
+            #         text = font.render(("   " + str(int(complement[3])) + " %"), 1, (50, 0, 200))
+            #         screen.blit(text, (Mouse_Position))
+
+
 
 
 class Nitrogenase_Controller(object): 
@@ -195,20 +205,33 @@ class Nitrogenase_Controller(object):
         """Initialize within the specialized model""" 
         self.view = view 
 
-    def Key_Press (self): 
+    def Key_Press (self):
 
-        if pygame.key.get_pressed()[pygame.K_UP]: 
-            self.view.Genome_Bar_Height += 20 
+        for e in pygame.event.get():
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 4: 
+                    print "scrolling"
+                    self.view.scroll_y = min(self.view.scroll_y + 15, 0)
+                if e.button == 5: 
+                    print "scrolling"
+                    self.view.scroll_y = max(self.view.scroll_y - 15, -300)
 
-        if pygame.key.get_pressed()[pygame.K_DOWN]:
-            self.view.Genome_Bar_Height -= 20  
+        # if pygame.key.get_pressed()[pygame.K_UP]: 
+        #     self.view.Genome_Bar_Height += 10 #Pygame.rect.move with a list of rectangles.
+        #     self.view.draw()
+
+        # if pygame.key.get_pressed()[pygame.K_DOWN]:
+        #     self.view.Genome_Bar_Height -= 10
+        #     self.view.draw()  
 
 
 #Running the Code (Adapted from the in class brick breaker code.)
 if __name__ == '__main__':
 
     pygame.init() 
-    size = (640, 480)
+    lsize = (12000, 640) #W,L
+    size= (480, 640)
+
     model = Nitrogene_Graph_Model(size)  
     print len(model.forward_only_orf), len(model.complement_only_orf)
     view = Nitrogene_Graph_View(model, model.forward_only_orf, model.complement_only_orf)
@@ -216,10 +239,10 @@ if __name__ == '__main__':
     #Initialize left and WIDTH 
     running = True
     controller = Nitrogenase_Controller(view)
+    view.draw()
     while running:
         controller.Key_Press() 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-        view.draw() 
+                running = False 
         time.sleep(.001)
