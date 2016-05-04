@@ -55,6 +55,9 @@ class Nitrogene_Graph_View (object):
         self.lscreen.fill((0,0,0,0)) 
 
         for orf_num, orf in enumerate(self.forward_only_orf):
+            #if orf_num != 14:
+            #    continue
+
             #Creating the stacking elements that build the bar graph for false values
 
             #Renaming things for the sake of legibility.
@@ -62,7 +65,10 @@ class Nitrogene_Graph_View (object):
             length = orf[0]
             start = orf[4]
             end = orf[5]
+            if start > end:  #Why would start be greater than end? 
+                start, end = end, start
             percent_match = orf[3]
+            #print 'start', start, 'end', end
 
                 
             #This code draws the blue bars that represent the length of segments of DNA. 
@@ -88,13 +94,14 @@ class Nitrogene_Graph_View (object):
                 
                 #Iterate through the rest of the sequence. 
 
-            elif percent_match >= self.threshold: 
+            elif percent_match > self.threshold: 
                 color_match = (0, percent_match, 0, 0) 
                 pygame.draw.rect(self.lscreen, color_match, orf_rectangle, 0)
 
             Mouse_Position = pygame.mouse.get_pos()
-
+            #print Mouse_Position, orf_rectangle
             if orf_rectangle.collidepoint(Mouse_Position[0], Mouse_Position[1]-self.scroll_y):
+                #print pygame.time.get_ticks() 
                 font = pygame.font.Font(None, 14)
                 text = font.render(("   " + str(int(percent_match)) + " %"), 1, (250, 250, 210))
                 self.lscreen.blit(text, (Mouse_Position[0], Mouse_Position[1]-self.scroll_y))
