@@ -240,9 +240,6 @@ def find_all_ORFs(dna):
     finaldnalist.extend(dnalist3)
     return finaldnalist
 
-
-
-
     return ORFs
 
 

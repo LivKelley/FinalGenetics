@@ -52,6 +52,8 @@ class Nitrogene_Graph_View (object):
     def draw(self): 
         """Draws the gene image onto the windrect(Surface, color, Rect, width=0) -> Rectow."""
 
+        self.lscreen.fill((0,0,0,0)) 
+
         for orf_num, orf in enumerate(self.forward_only_orf):
             #Creating the stacking elements that build the bar graph for false values
 
@@ -92,10 +94,11 @@ class Nitrogene_Graph_View (object):
 
             Mouse_Position = pygame.mouse.get_pos()
 
-            if orf_rectangle.collidepoint(Mouse_Position):
+            if orf_rectangle.collidepoint(Mouse_Position[0], Mouse_Position[1]-self.scroll_y):
                 font = pygame.font.Font(None, 14)
                 text = font.render(("   " + str(int(percent_match)) + " %"), 1, (250, 250, 210))
-                self.lscreen.blit(text, (Mouse_Position))
+                self.lscreen.blit(text, (Mouse_Position[0], Mouse_Position[1]-self.scroll_y))
+
 
     def update(self): 
 
