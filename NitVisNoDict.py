@@ -20,16 +20,16 @@ class Nitrogene_Graph_Model(object):
         self.left = size[0]
         self.sorter_code(self.code_loader())
     def code_loader (self):
-        return pickle.load(open('genes_foundNoDict.pickle'))
+        return pickle.load(open('genes_found.pickle'))
 
     def sorter_code (self, list_of_orfs_imported):
 
         self.forward_only_orf = []
         self.complement_only_orf = []
         for item in list_of_orfs_imported:
-            if item[6] == 0:
+            if item["rev_flag"] == 0:
                 self.forward_only_orf.append(item) 
-            elif item[6] == 1:
+            elif item["rev_flag"] == 1:
                 self.complement_only_orf.append(item)
 #View - draw functions 
 
@@ -62,19 +62,19 @@ class Nitrogene_Graph_View (object):
 
             #Renaming things for the sake of legibility.
 
-            length = orf[0]
-            start = orf[4]
-            end = orf[5]
-            if start > end:  #Why would start be greater than end? 
-                start, end = end, start
-            percent_match = orf[3]
+            # length = orf[0]
+            # start = orf[4]
+            # end = orf[5]
+            if orf["start"] > orf["end"]:  #Why would start be greater than end? 
+                orf["start"], orf["end"] = orf["end"], orf["start"]
+            percent_match = orf["percent_match"]
             #print 'start', start, 'end', end
 
                 
             #This code draws the blue bars that represent the length of segments of DNA. 
             dna_length_rectangle = pygame.Rect(0,
                                    (self.Genome_Bar_Height + 10)*(orf_num+1),
-                                    length/self.comp_fact,
+                                    orf["length_item"]/self.comp_fact,
                                     self.Genome_Bar_Height
                                     )
 
@@ -82,20 +82,20 @@ class Nitrogene_Graph_View (object):
 
            #Orf - White or green
 
-            orf_rectangle = pygame.Rect(float(start)/self.comp_fact,
+            orf_rectangle = pygame.Rect(float(orf["start"])/self.comp_fact,
                                         (self.Genome_Bar_Height + 10)*(orf_num+1),
-                                        float(end- start)/self.comp_fact,
+                                        float(orf["end"]- orf["start"])/self.comp_fact,
                                         self.Genome_Bar_Height)
 
 
-            if 0 <= percent_match <= self.threshold:
+            if 0 <= orf["percent_match"] <= self.threshold:
 
                 pygame.draw.rect(self.lscreen, (150, 150, 150, 150), orf_rectangle, 0)
                 
                 #Iterate through the rest of the sequence. 
 
-            elif percent_match > self.threshold: 
-                color_match = (0, percent_match, 0, 0) 
+            elif orf["percent_match"]  > self.threshold: 
+                color_match = (0, orf["percent_match"] , 0, 0) 
                 pygame.draw.rect(self.lscreen, color_match, orf_rectangle, 0)
 
             Mouse_Position = pygame.mouse.get_pos()
