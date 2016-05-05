@@ -24,9 +24,6 @@ if __name__ == "__main__":
     # dna = "ATGCGAATGTAGCATCAAA"
     # dna = load_seq("./data/X73525.fa") #From earlier code.
 
-
-
-
     i = 0
 
     #for a in metagenome:    #a is each tuple that is (label, DNA) in metagenome

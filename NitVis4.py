@@ -41,7 +41,7 @@ class Nitrogene_Graph_View (object):
 
         self.model = model 
         self.threshold = 20 #float(raw_input("Please type a two digit number representing the DNA accuracy threshold percentage."))
-        self.Genome_Bar_Height = 10 
+        self.Genome_Bar_Height = 15
         self.forward_only_orf = forward_only_orf
         self.complement_only_orf = complement_only_orf
         self.comp_fact = 10 # compression factor
@@ -73,7 +73,7 @@ class Nitrogene_Graph_View (object):
                 
             #This code draws the blue bars that represent the length of segments of DNA. 
             dna_length_rectangle = pygame.Rect(0,
-                                   (self.Genome_Bar_Height + 10)*(orf_num+1),
+                                   (self.Genome_Bar_Height + 10)*(orf_num*2),
                                     orf["length_item"]/self.comp_fact,
                                     self.Genome_Bar_Height
                                     )
@@ -83,7 +83,7 @@ class Nitrogene_Graph_View (object):
            #Orf - White or green
 
             orf_rectangle = pygame.Rect(float(orf["start"])/self.comp_fact,
-                                        (self.Genome_Bar_Height + 10)*(orf_num+1),
+                                        (self.Genome_Bar_Height + 10)*(orf_num*2),
                                         float(orf["end"]- orf["start"])/self.comp_fact,
                                         self.Genome_Bar_Height)
 
@@ -99,12 +99,48 @@ class Nitrogene_Graph_View (object):
                 pygame.draw.rect(self.lscreen, color_match, orf_rectangle, 0)
 
             Mouse_Position = pygame.mouse.get_pos()
-            #print Mouse_Position, orf_rectangle
+                #print Mouse_Position, orf_rectangle
             if orf_rectangle.collidepoint(Mouse_Position[0], Mouse_Position[1]-self.scroll_y):
                 #print pygame.time.get_ticks() 
                 font = pygame.font.Font(None, 14)
                 text = font.render(("   " + str(int(percent_match)) + " %"), 1, (250, 250, 210))
                 self.lscreen.blit(text, (Mouse_Position[0], Mouse_Position[1]-self.scroll_y))
+
+            #For comp values 
+
+            for comp_num, comp in enumerate(self.complement_only_orf): 
+                    #This code draws the blue bars that represent the length of segments of DNA. 
+                comp_length_rectangle = pygame.Rect(0,
+                                       (self.Genome_Bar_Height + 10)*(comp_num*2+1),
+                                        comp["length_item"]/self.comp_fact,
+                                        self.Genome_Bar_Height
+                                        )
+
+                pygame.draw.rect(self.lscreen, (0,100,200,100), comp_length_rectangle, 0)
+
+               # #Orf - White or green
+
+                comp_rectangle = pygame.Rect(float(comp["start"])/self.comp_fact,
+                                            (self.Genome_Bar_Height + 10)*(comp_num*2+1),
+                                            float(comp["end"]- comp["start"])/self.comp_fact,
+                                            self.Genome_Bar_Height)
+
+
+                if 0 <= comp["percent_match"] <= self.threshold:
+
+                    pygame.draw.rect(self.lscreen, (150, 150, 150, 150), comp_rectangle, 0)
+                    
+                    #Iterate through the rest of the sequence. 
+
+                elif comp["percent_match"]  > self.threshold: 
+                    color_match = (0, comp["percent_match"] , 0, 0) 
+                    pygame.draw.rect(self.lscreen, color_match, comp_rectangle, 0)
+
+                if comp_rectangle.collidepoint(Mouse_Position[0], Mouse_Position[1]-self.scroll_y):
+                    #print pygame.time.get_ticks() 
+                    font = pygame.font.Font(None, 14)
+                    text = font.render(("   " + str(int(percent_match)) + " %"), 1, (250, 250, 210))
+                    self.lscreen.blit(text, (Mouse_Position[0], Mouse_Position[1]-self.scroll_y))
 
 
     def update(self): 
@@ -116,6 +152,8 @@ class Nitrogene_Graph_View (object):
             textpos = text.get_rect()
             self.screen.blit(text, textpos)
             self.screen.blit(self.screen, (0,0))
+
+            
 
             pygame.display.flip()
 
