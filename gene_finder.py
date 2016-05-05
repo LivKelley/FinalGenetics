@@ -5,6 +5,7 @@ Find Nitrogenase
 @author: Erica Lee, Rebecca Gettys, Liv Kelley
 """
 
+<<<<<<< HEAD
 ### FROM HERE DOWN IS CODE THAT IS COMMENTED OUT AND MOVING TO NITROGENASE FINDER
 #import random
 #from distance import levenshtein
@@ -37,6 +38,10 @@ Find Nitrogenase
 #from load import load_seq
 #from load import load_nitrogenase_seq
 #nitrogenase = load_nitrogenase_seq()
+=======
+
+
+>>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
 
 
 def get_complement(nucleotide):
@@ -79,6 +84,7 @@ def get_reverse_complement(dna):
     'GAGTGCCGTTATTTAGGGATG'
     """
 
+<<<<<<< HEAD
     #for character in(dna):
      #   print character
 
@@ -93,6 +99,11 @@ def get_reverse_complement(dna):
     finallist = list() #create a totally empty list
     #for item in dnalist:
      #   item = get_complement(item)
+=======
+    dnalist = list (dna) #dna in correct order
+    dnalist.reverse() #dna in complement order now
+    finallist = list () #create a totally empty list
+>>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
     for element in dnalist: #taking reversed element list, getting complement, putting it in final list
         element = get_complement(element) #now we have the complement
         finallist.append(element) #stick that one on the end
@@ -224,13 +235,6 @@ def find_all_ORFs(dna):
     []
     """
 
-    #works but is slightly slower
-    # ORFs = []
-    # ORFs.extend((find_all_ORFs_oneframe(dna[0:])))
-    # ORFs.extend((find_all_ORFs_oneframe(dna[1:])))
-    # ORFs.extend((find_all_ORFs_oneframe(dna[2:])))
-
-    #slightly faster 
     dnalist1= find_all_ORFs_oneframe(dna) # use the default reading frame, find orfs
     dnalist2 =find_all_ORFs_oneframe(dna[1:]) #shift by one, find orfs
     dnalist3 = find_all_ORFs_oneframe(dna[2:]) #using C so that it can't add a start codon, just shifting it by two now, find ords
@@ -258,7 +262,6 @@ def find_all_ORFs_both_strands(dna):
     regular_orfs= find_all_ORFs(dna) # get all orfs on the regular strand
     for item in regular_orfs:
         item.append(0) #0 for regular strand
-    #print regularorfs
 
     rev_dna=get_reverse_complement(dna) # get the reverse complement
     rev_orfs = find_all_ORFs(rev_dna) #find the orfs of the reverse complement
@@ -268,7 +271,6 @@ def find_all_ORFs_both_strands(dna):
     finaldnalist = [] #stick em together on a list!
     finaldnalist.extend(regular_orfs)
     finaldnalist.extend(rev_orfs)
-    #print finaldnalist
     return finaldnalist
 
 
@@ -281,17 +283,14 @@ def longest_ORF(dna):
     >>> longest_ORF("AAAAAAAA")
     ['']
     """
-    # TAA TGA TAG
     lenlist = []
     orflist = find_all_ORFs_both_strands(dna)
     if orflist == []:
         return ['']
     for item in orflist:
         lenlist.append(len(item[0])) #add length of that item in the orf list to the end of the length list
-        #print lenlist
     longestorfloc=lenlist.index(max(lenlist))
     longestorf = orflist[longestorfloc]
-    #print orflist
     return longestorf
 
 
@@ -315,6 +314,7 @@ def longest_ORF_noncoding(dna, num_trials):
 
 
 
+<<<<<<< HEAD
 
 
 #GOING BEYOND CODE BEGINS HERE THIS IS ALL MOVING TO NITROGENASE
@@ -366,3 +366,5 @@ def longest_ORF_noncoding(dna, num_trials):
       #  data_output_tuple_list.append( ( len(item), len(nitrogenase), levenshtein_val, percent_match )) #,loc_in_item_start, loc_in_item_end
     #print data_output_tuple_list
 
+=======
+>>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
