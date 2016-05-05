@@ -83,7 +83,9 @@ if __name__ == "__main__":
         items_data_dict["rev_flag"]= rev_flag
         #print items_data_dict
         data_output.append(items_data_dict)
+
     print data_output
+
 
 
     #     # snippet = longest_ORF(dna)
