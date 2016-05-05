@@ -1,31 +1,9 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# Nitrogene Finder 
-
-Authors: Rebecca Gettys, Erica Lee, and Liv Kelley
-
-Attribute code from: (Fill in later.) 
-
-Description: 
-
-Nitrogene is a program that defines genetic percentage matches with the gene for nitrogenase using memoized levenstein distances and a code that converts a sequence of base pairs into three-base pair codons.
-
-Getting Started and Usage: 
-
-After downloading this program from GitHub, then run this function by choosing a bacterial colony and use the program Finch to find its base pair sequence. Put this sequence into a script format and input it into the function's variable (dna). The program should output an image displaying the strength of the percentage match by the length of the bolded sections of a bar representing the DNA. This program should work with multiple genome inputs, so long as each sequence is in its own string and then put into a list. 
-=======
-Authors: Rebecca Gettys, Erica Lee, and Liv Kelley
-=======
-**Nitrogene - A Nitrogenase(Gene) Search Tool and Visualization Maker
->>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
-
-
 
 *Description:
 
 Nitrogene is a program that finds percentage similarities between a gene and open reading frames (ORFs) in a genome or
 metagenome which is comprised of a set of contigous regions ("contigs"). It identifies the similarities using a memoized
-levenstein distance algorithm. Nitrogenase_finder.py returns a list of dictionaries for each plaustibly-sized ORF that
+levenshtein distance algorithm. Nitrogenase_finder.py returns a list of dictionaries for each plaustibly-sized ORF that
 contains the length of the ORF, the start and end locations of the ORF, a flag indicating forward or reverse complement
 location, and the percentage match between the ORF and the gene, in addition to the length of the gene being used and
 the levenshtein distance, which are not used in the visualization but are present for debugging reasons in the
@@ -40,7 +18,7 @@ Microbial Metagenome from Dr. Jean Huang
 
 A code snippet used for the recursive levenshtein memoized distance can be found [here](https://programmingpraxis.com/2014/09/12/levenshtein-distance/);
  it walked us through the implementation and we based ours on this.
-We also  used the code contained in the base repository for the Software Design Miniproject 1 (Gene Finder) which can be
+We also used the code contained in the base repository for the Software Design Miniproject 1 (Gene Finder) which can be
  found on [Github](https://github.com/sd16spring/GeneFinder).
 
 *Getting Started and Usage:
@@ -51,8 +29,9 @@ followed by visualization.py. If you would like to run this program on metagenom
 Huang, edit the load_metagenome function in load.py to point to the appropriate file. If you would like to run this
 program to look for genes other than nitrogenase, edit the load_nitrogenase function in load.py to point to a file that
 contains the proper gene sequence. Please note that if the formatting or file structure on either your metagenome or on
- your nitrogenase is different than what we have, you will need to either change the code to match your data's
- formatting or change your formatting to match ours.
+your nitrogenase is different than what we have, you will need to either change the code to match your data's
+formatting or change your formatting to match ours. Once you're finished running your program, close the code by typing 
+"control c" into the command window.
 
 Requirements:
 This program runs on python 2.7. It uses the sys and pickle modules, which are built into Python 2. Additionally,
@@ -62,10 +41,3 @@ in order to utilize our program.
 
 This program is released as is, with no guarantees to it's function, under the MIT license. Hold the authors harmless
 and check your outputs for rationality - there be BUGS out there!
-
-<<<<<<< HEAD
-After downloading this program from GitHub, then run this function by choosing a bacterial colony and use the program Finch to find its base pair sequence. Put this sequence into a script format and input it into the function's variable (dna). The program should output an image displaying the strength of the percentage match by the length of the bolded sections of a bar representing the DNA. This program should work with multiple genome inputs, so long as each sequence is in its own string and then put into a list.
->>>>>>> ca7c88eb6b9317d91610cbeee9b9b4dcb2c0bd8a
-=======
->>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
-
