@@ -5,45 +5,6 @@ Find Nitrogenase
 @author: Erica Lee, Rebecca Gettys, Liv Kelley
 """
 
-<<<<<<< HEAD
-### FROM HERE DOWN IS CODE THAT IS COMMENTED OUT AND MOVING TO NITROGENASE FINDER
-#import random
-#from distance import levenshtein
-#from amino_acids import aa, codons, aa_table   # you may find these useful
-#import sys
-#import pickle
-##from os import path
-
-
-
-
-#sys.setrecursionlimit(3000)
-
-
-#Importing the metagenome
-
-
-#from load import load_metagenome
-#metagenome = load_metagenome()
-# metagenome = 'ATGGGAAAACTCCGGCAGATCGCTTTCTACGGCAAGGGCGGGATCGGCAAGTCGACGACCTCGCAGAACACCCTCGCGGCACTGGTCGAGATGGGTCAGAAGATCCTCATCGTCGGCTGCGATCCCAAGGCCGACTCGACCCGCCTGATCCTGAACACCAAGCTGCAGGACACCGTGCTTCACCTCGCCGCCGAAGCGGGCTCCGTCGAGGATCTCGAACTCGAGGATGTGGTCAAGATCGGCTACAAGGGCATCAAATGCACCGAAGCCGGCGGGCCGGAGCCGGGCGTGGGCTGCGCGGGCCGCGGCGTCATCACCGCCATCAACTTCCTGGAAGAGAACGGCGCCTATGACGACGTCGACTACGTCTCCTACGACGTGCTGGGCGACGTGGTCTGCGGCGGCTTCGCCATGCCGATCCGCGAGAACAAGGCGCAGGAAATCTACATCGTCATGTCGGGCGAGATGATGGCGCTCTATGCGGCCAACAACATCGCCAAGGGCATCCTGAAATACGCGAACTCGGGCGGCGTGCGCCTCGGCGGCCTGATCTGCAACGAGCGCAAGACCGACCGCGAGCTGGAACTGGCCGAGGCCCTCGCCGCGCGTCTGGGCTGCAAGATGATCCACTTCGTTCCGCGCGACAATATCGTGCAGCACGCCGAGCTCCGCCGCGAGACGGTCATCCAGTATGCGCCCGAGAGCAAGCAGGCGCAGGAATATCGCGAACTGGCCCGCAAGATCCACGAGAACTCGGGCAAGGGCGTGATCCCGACCCCGATCACCATGGAAGAGCTGGAAGAGATGCTGATGGATTTCGGCATCATGCAGTCCGAGGAAGACCGGCTCGCCGCCATCGCCGCCGCCGAGGCCTGA'
-
-
-#from load import load_seq_paul
-
-#pauls_seq = load_seq_paul()
-#pauls_seq = 'GCCCGGACATTCTACATCTCCGCGAAAACACACACTTTTTCGTCTCCGGCGAAGCTTGGCACGCTCGTTGCAAAACAGGGATCAGCAAGGCGAGGGATGGTTGGCCGAGCAGTTACTGCAAAGGGCAACGTCCGCATCTGAGCCGTGCGACGGTTTTGAACGGAAGAAGGCTGCGCCTCGGCGCAAATCGATCAAGCGGCATTAGGTCAACGGAGAGAAAACATGGCACTTCGGCAAATCGCATTCTACGGCAAGGGCGGCATCGGCAAGTCGACCACCTCGCAGAACACCCTCGCGGCGCTGGTTGAGATGGGTCAGAAGATCCTGATCGTCGGCTGCGACCCCAAGGCGGACTCCACCCGTCTGATCCTCAACACCAAGATGCAGGACACGGTGCTGAGCCTCGCCGCGGAAGCGGGTTCGGTGGAAGACCTCGAACTCGAAGACGTGATGAAGATCGGCTACAAGGGCATCAAGTGCACCGAAGCCGGTGGCCCGGAGCCGGGCGTCGGCTGCGCCGGCCGCGGCGTTATCACCGCGATCAACTTCCTCGAAGAAAACGGCGCCTATGAAGACGTCGACTACGTCTCCTACGACGTGCTCGGCGACGTGGTGTGCGGCGGCTTCGCGATGCCGATCCGTGAAAACAAGGCGCAGGAAATCTACATCGTCATGTCCGGCGAGATGATGGCGCTGTATGCCGCCAACAACATCTCCAAGGGCATTCTGAAGTACGCTTCGTCGGGCGGCGTCCGTCTCGGCGGCCTGATCTGCAACGAGCGCCAGACCGACCGCGAGCTCGACCTCGCCGAAGCGCTGGCCAAGAAGCTGAACTCGAAGCTGATCCACTTCGTGCCGCGCGACAATATCGTGCAGCACGCCGAGCTGCGCCGCCAGACCGTGATCCAGTACGCGCCCGACAGCCAGCAGGCTAAGGAATATCGCGCCCTGGCCAACAAGGTCCATGCCAACTGCGGCAACGGCACCATCCCGACCCCGATCACCATGGAAGAGCTGGAAGAGATGCTGCTCGACTTCGGCATCATGAAGACCGAGGAGCAGCAGCTCGCCGAGCTCGCCGCCAAGGAAGCCGCCAAGGCGGCCGCGTCCGCCTGATCGCATCAGCCAGGCCGGTCGCCTAGCGCGACCGGCCGCCATCCCGGCGGCCCCAGACACGAGGAACAACGATGAGCACCGCAGTCGCAGAATCCCCCGCGGACATCAAGGAACGTAACAAGAAGCTGATCGGCGAAGTCCTGGAGGCCTATCCGGACAAGTCGGCCAAGCGTCGCGCCAAGCATCTCAACACGTACGACGCCGAGAAGGCGGAGTGCTCGGTCAAGTCCAACATCAAGTCGATCCCGGGCGTGATGACGATCCGCGGTTGCGCCTACGCCGGCTCGAAGGGCGTGGTGTGGGGCCCGATCAAGGACATGGTCCACATCAGCCACGGCCCGGTCGGCTGCGGCCAGTATTCGTGGGGTTCGCGCCGCAACTATTACAAGGGAACCACCGGCGTCGACACTTTCGGCACGATGCAGTTCACCTCCGACTTCCAGGAGAAGGACATCGTTTTCGGCGGTGACAAGAAGCTCGGCAAGATCATCGACGAGATCCAGGAGCTGTTCCCGCTCTCCAAGGGCATCTCGGTGCAGTCGGAATGCCCGATCGGTCTGATCGGCGACGACATCGAGGCGGTCTCCAAGGCCAAGTCGAAGCAGTATGACGGCAAGCCGATCATCCCGGTCCGCTGCGAAGGCTTCCGCGGCGTGTCGCAGTCGCTCGGCCACCACATCGCCAACGACGTGATCCGTGACTGGGTGTTCGACAAGGCCGCCGAGAAGAACGCCGGCTTCCAGTCGACCCCCTACGACGTCGCGATCATCGGCGACTACAACATCGGCGGCGATGCCTGGGCCTCGCGCATCCTGCTCGAGGAAATGGGCCTCCGCGTGATCGCGCAGTGGTCCGGCGACGGCACCATCGCGGAGCTGGAGAACACCCCGAAGGCGAAGCTGAACATCCTGCACTGCTACCGCTCGATGAACTACATCACGCGGCACATGGAAGAGAAGTTCGGTATTCCGTGGGTTGAATACAACTTCTTCGGCCCGTCCAAGATCGA'
-
-#Loading the nitrogenase
-
-#from load import load_seq
-#from load import load_nitrogenase_seq
-#nitrogenase = load_nitrogenase_seq()
-=======
-
-
->>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
-
-
 def get_complement(nucleotide):
     """ Returns the complementary nucleotide
         nucleotide: a nucleotide (A, C, G, or T) represented as a string
@@ -67,7 +28,6 @@ def get_complement(nucleotide):
         return 'G'
     elif nucleotide == 'G': # G to C
         return 'C'
-#should I have a negative one, you didn't feed me a valid dna sequence
     else:
         return -1
 
@@ -84,26 +44,10 @@ def get_reverse_complement(dna):
     'GAGTGCCGTTATTTAGGGATG'
     """
 
-<<<<<<< HEAD
-    #for character in(dna):
-     #   print character
-
-
-    #dnalist = list(dna) #dna in correct order
-    #finallist = [get_complement(element) for element in dnalist]
-    #finalstring = ''.join(finallist)
-    #return finalstring
-
-    dnalist = list (dna) #dna in correct order
-    dnalist.reverse() #dna in complement order now
-    finallist = list() #create a totally empty list
-    #for item in dnalist:
-     #   item = get_complement(item)
-=======
     dnalist = list (dna) #dna in correct order
     dnalist.reverse() #dna in complement order now
     finallist = list () #create a totally empty list
->>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
+
     for element in dnalist: #taking reversed element list, getting complement, putting it in final list
         element = get_complement(element) #now we have the complement
         finallist.append(element) #stick that one on the end
@@ -314,57 +258,4 @@ def longest_ORF_noncoding(dna, num_trials):
 
 
 
-<<<<<<< HEAD
 
-
-#GOING BEYOND CODE BEGINS HERE THIS IS ALL MOVING TO NITROGENASE
-
-
-
-
-
-#if __name__ == "__main__":
-
-
-
-    #i = 0
-
-    ##for a in metagenome:    #a is each tuple that is (label, DNA) in metagenome
-    ##    dna = a[1]
-    # #   holder_dna = []
-    # #   snippet = find_all_ORFs_both_strands(dna)
-    # #   for item in snippet:
-    # #       #print item
-    # #       if len(item) > .8*len(nitrogenase):
-    # #           holder_dna.append(item)
-    # #   print str(len(holder_dna)) + " number of matches"
-    # #   for item in holder_dna:
-    # #       print str(len(item)) + " item length", str(len(nitrogenase)) + " nitrogenase length"
-    # #       print levenshtein(item,nitrogenase) + " distance"
-
-    #dna = pauls_seq
-    ##print len(dna)
-    #holder_dna = []
-    #snippet = find_all_ORFs_both_strands(dna)
-    ##print snippet
-    #for item in snippet:
-     #   #print item
-     #   #for
-      #  if len(item[0]) > .8*len(nitrogenase):
-      #      holder_dna.append(item)
-       # #holder_dna.append(item)
-
-
-    #data_output_tuple_list = []
-    ##print str(len(holder_dna)) + " number of matches"
-    #for item in holder_dna:
-     #   #print str(len(item)) + " item length", str(len(nitrogenase)) + " nitrogenase length"
-     #   #print str(levenshtein(item,nitrogenase)) + " distance"
-      #  #print str(abs(len(item)-levenshtein(item,nitrogenase))/len(item)) + '%'
-      #  levenshtein_val = levenshtein(item[0], nitrogenase)
-      #  percent_match = abs(float(len(item[0]))-float(levenshtein_val))/float(len(item[0])) * 100
-      #  data_output_tuple_list.append( ( len(item), len(nitrogenase), levenshtein_val, percent_match )) #,loc_in_item_start, loc_in_item_end
-    #print data_output_tuple_list
-
-=======
->>>>>>> 2133ce6a87288a37de77f94ea856b7538e401512
