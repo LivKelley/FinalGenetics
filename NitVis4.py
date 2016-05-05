@@ -153,7 +153,9 @@ class Nitrogene_Graph_View (object):
             self.screen.blit(text, textpos)
             self.screen.blit(self.screen, (0,0))
 
-            
+            img = pygame.image.load('Key.png') 
+            self.screen.blit(img,(513,0))
+
 
             pygame.display.flip()
 
